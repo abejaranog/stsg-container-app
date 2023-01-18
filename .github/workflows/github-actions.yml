@@ -53,4 +53,22 @@ jobs:
         run: terraform workspace select $environment || terraform workspace new $environment
 
       - name: Terraform Plan
+        id: tfplan
         run: terraform plan -out=tfplan -detailed-exitcode -var="docker_image=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/testing2:latest" --var-file $environment.tfvars
+
+      - name: Submit plan for approval
+        uses: jbergknoff/github-action-wait-for-terraform-plan-approval@v1
+        id: submit_plan
+        with:
+          command: submit
+          plan_contents: ${{steps.tfplan.outputs.stdout}}
+
+      - name: Wait for approval
+        uses: jbergknoff/github-action-wait-for-terraform-plan-approval@v1
+        with:
+          command: wait
+          plan_id: ${{steps.submit_plan.outputs.plan_id}}
+          timeout_seconds: 600
+      
+      - name: Terraform Apply
+        run: terraform apply --auto-approve -input=false tfplan
