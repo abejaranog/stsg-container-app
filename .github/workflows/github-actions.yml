@@ -56,13 +56,7 @@ jobs:
         id: tfplan
         run: terraform plan -out=tfplan -detailed-exitcode -var="docker_image=docker.io/${{ secrets.DOCKERHUB_USERNAME }}/testing2:latest" --var-file $environment.tfvars
 
-      - name: Approval
-        uses: trstringer/manual-approval@v1
-        with:
-          secret: ${{ github.TOKEN }}
-          approvers: abejaranog
+        ### A manual approve and notify stage is recommended
 
-        ### A notify stage is recommended
-
-      - name: Terraform Apply
-        run: terraform apply --auto-approve -input=false tfplan
+      # - name: Terraform Apply
+      #   run: terraform apply --auto-approve -input=false tfplan
