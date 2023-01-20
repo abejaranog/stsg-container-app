@@ -3,11 +3,6 @@ variable "region" {
   description = "AWS Region to deploy infrastructure on it"
 }
 
-variable "subnet_count" {
-  type        = number
-  description = "Number of subnets to deploy in each tier"
-}
-
 variable "environment" {
   type = string
 }

@@ -58,5 +58,5 @@ jobs:
 
         ### A manual approve and notify stage is recommended
 
-      # - name: Terraform Apply
-      #   run: terraform apply --auto-approve -input=false tfplan
+      - name: Terraform Apply
+        run: terraform apply --auto-approve -input=false tfplan
